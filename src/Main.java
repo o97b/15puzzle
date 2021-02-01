@@ -1,14 +1,13 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class Main {
     static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
     static int N;
+    static ArrayList<Integer> endArray = new ArrayList<>();
+
     static Position endPosition;
 
     static int ReadInt() throws IOException {
@@ -16,18 +15,44 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-        // N = ReadInt();
-        //int[] currentPositionArray = new int[N * N];
-//            for (int i = 0; i < N * N; i++) {
-//                currentPositionArray[i] = ReadInt();
-//            }
-        N = 3;
-        int[] currentPositionArray = {1,0,3,4,5,6,7,8,2};
+        N = ReadInt();
+
+        endArray.add(1);
+        endArray.add(2);
+        endArray.add(3);
+        endArray.add(4);
+        endArray.add(5);
+        endArray.add(6);
+        endArray.add(7);
+        endArray.add(8);
+//        endArray.add(9);
+//        endArray.add(10);
+//        endArray.add(11);
+//        endArray.add(12);
+//        endArray.add(13);
+//        endArray.add(14);
+//        endArray.add(15);
+        endArray.add(0);
+
+        endPosition = new Position(endArray, Integer.MAX_VALUE, null);
+
+        List<Integer> currentPositionArray = new ArrayList<>(N * N);
+        for (int i = 0; i < N * N; i++) {
+            currentPositionArray.add(ReadInt());
+        }
 
         bufferedReader.close();
 
         Position currentPosition = new Position(currentPositionArray, 0, null);
 
-        Algorithm.algorithm(currentPosition);
+        LinkedList<Position> PATH = Algorithm.algorithm(currentPosition);
+
+        System.out.println("__________");
+
+        for (Position position : PATH) {
+            System.out.println(position.positionArray.toString());
+        }
+
+
     }
 }

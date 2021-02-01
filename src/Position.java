@@ -4,17 +4,21 @@ import java.util.*;
 public class Position {
 
     int N = Main.N;
-    int[] positionArray;
-    int hashPosition, stepForPosition;
+    List<Integer> positionArray;
+    int  stepForPosition, weight;
     Position parent;
 
-    public Position(int[] position, int step, Position parent) {
-        this.positionArray = position;
+    public Position(List<Integer> positionArray, int step, Position parent) {
+        this.positionArray = positionArray;
         this.stepForPosition = step;
-        this.hashPosition = Arrays.hashCode(position);
         this.parent = parent;
+        this.weight = weight();
     }
 
+    @Override
+    public int hashCode() {
+        return positionArray.hashCode();
+    }
 
     public boolean checkPosition() { // Проверка позиции на достижимость искомой
         return true;
@@ -23,8 +27,8 @@ public class Position {
     public int manhattan() { // Расчет манхеттонского расстояния
         int result = 0, element;
 
-        for (int i = 0; i < positionArray.length; i++) {
-            element = positionArray[i];
+        for (int i = 0; i < positionArray.size(); i++) {
+            element = positionArray.get(i);
             if (element == 0) {
                 result += (N - 1 - i % N) + (N - 1 - i / N);
             }
@@ -39,7 +43,7 @@ public class Position {
     }
 
 
-    public int weight() { // Вес позиции
+    private int weight() { // Вес позиции
         return manhattan() + stepForPosition;
     }
 
@@ -49,43 +53,39 @@ public class Position {
         int zeroPosition = 0, zeroPositionX = 0, zeroPositionY = 0;
         LinkedList<Position> neighbors = new LinkedList<>();
 
-        for (int i = 0; i < positionArray.length; i++) {
-            if (positionArray[i] == 0) {
+        for (int i = 0; i < positionArray.size(); i++) {
+            if (positionArray.get(i) == 0) {
                 zeroPosition = i;
                 zeroPositionX = i % N;
                 zeroPositionY = i / N;
             }
         }
 
-        int[] neighbor = positionArray.clone();
-
+        List<Integer> neighbor = new ArrayList<>(positionArray);
         if (zeroPositionX != 0) {
-            int temp = neighbor[zeroPosition];
-            neighbor[zeroPosition] = neighbor[zeroPosition-1];
-            neighbor[zeroPosition-1] = temp;
+            Collections.swap(neighbor, zeroPosition, zeroPosition - 1);
             neighbors.add(new Position(neighbor, stepForPosition + 1, this));
         }
-        neighbor = positionArray.clone();
+        neighbor = new ArrayList<>(positionArray);
         if (zeroPositionX != N-1) {
-            int temp = neighbor[zeroPosition];
-            neighbor[zeroPosition] = neighbor[zeroPosition+1];
-            neighbor[zeroPosition+1] = temp;
+            Collections.swap(neighbor, zeroPosition, zeroPosition + 1);
             neighbors.add(new Position(neighbor, stepForPosition + 1, this));
         }
-        neighbor = positionArray.clone();
+        neighbor = new ArrayList<>(positionArray);
         if (zeroPositionY != 0) {
-            int temp = neighbor[zeroPosition];
-            neighbor[zeroPosition] = neighbor[zeroPosition-N];
-            neighbor[zeroPosition-N] = temp;
+            Collections.swap(neighbor, zeroPosition, zeroPosition - N);
             neighbors.add(new Position(neighbor, stepForPosition + 1, this));
         }
-        neighbor = positionArray.clone();
+        neighbor = new ArrayList<>(positionArray);
         if (zeroPositionY != N-1) {
-            int temp = neighbor[zeroPosition];
-            neighbor[zeroPosition] = neighbor[zeroPosition+N];
-            neighbor[zeroPosition+N] = temp;
+            Collections.swap(neighbor, zeroPosition, zeroPosition + N);
             neighbors.add(new Position(neighbor, stepForPosition + 1, this));
         }
+
+        for (Position list : neighbors) {
+            System.out.println("neighbor " + list.positionArray.toString());
+        }
+
         return neighbors;
     }
 
