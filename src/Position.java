@@ -1,4 +1,3 @@
-import java.lang.invoke.SwitchPoint;
 import java.util.*;
 
 public class Position {
@@ -20,8 +19,21 @@ public class Position {
         return positionArray.hashCode();
     }
 
-    public boolean checkPosition() { // Проверка позиции на достижимость искомой
-        return true;
+    public boolean checkPosition() { // Проверка позиции на существование решения
+        int checkedSum = 0;
+
+        for (int i = 0; i < positionArray.size(); i++) {
+            if (positionArray.get(i) == 0) {
+                checkedSum += 1 + i / N;
+            } else {
+                for (int j = i + 1; j < positionArray.size(); j++) {
+                    if (positionArray.get(j) < positionArray.get(i)) {
+                        checkedSum++;
+                    }
+                }
+            }
+        }
+        return checkedSum % 2 == 0;
     }
 
     public int manhattan() { // Расчет манхеттонского расстояния
@@ -34,19 +46,17 @@ public class Position {
             }
             else {
                 if (i != element - 1) {
-                    result += Math.abs(i % N - (element - 1) % N +
-                            i / N - (element - 1) / N);
+                    result += Math.abs(i % N - (element - 1) % N) +
+                            Math.abs(i / N - (element - 1) / N);
                 }
             }
         }
         return result;
     }
 
-
     private int weight() { // Вес позиции
         return manhattan() + stepForPosition;
     }
-
 
     public LinkedList<Position> neighbors() { // Соседние позиции
 
@@ -83,7 +93,7 @@ public class Position {
         }
 
         for (Position list : neighbors) {
-            System.out.println("neighbor " + list.positionArray.toString());
+            System.out.println("Neighbor " + list.positionArray.toString());
         }
 
         return neighbors;
