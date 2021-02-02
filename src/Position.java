@@ -27,13 +27,13 @@ public class Position {
                 checkedSum += 1 + i / N;
             } else {
                 for (int j = i + 1; j < positionArray.size(); j++) {
-                    if (positionArray.get(j) < positionArray.get(i)) {
+                    if (positionArray.get(j) < positionArray.get(i) && positionArray.get(j) != 0) {
                         checkedSum++;
                     }
                 }
             }
         }
-        return checkedSum % 2 == 0;
+        return (checkedSum + N) % 2 == 0;
     }
 
     public int manhattan() { // Расчет манхеттонского расстояния

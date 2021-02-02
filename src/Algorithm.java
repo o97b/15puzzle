@@ -12,9 +12,9 @@ public class Algorithm {
         mapOfVisited.put(currentPosition.hashCode(), currentPosition);
 
         while (!priorityQueue.isEmpty()) {
-//            for (int i = 0; i < 25; i++) {
             currentPosition = mapOfVisited.get(priorityQueue.poll());
-            System.out.println("POLL " + currentPosition.positionArray.toString() + " " +  currentPosition.weight + " " + currentPosition.stepForPosition);
+            System.out.println("POLL " + currentPosition.positionArray.toString() + " Weight "
+                    +  currentPosition.weight + " Step " + currentPosition.stepForPosition);
             mapOfVisited.put(currentPosition.hashCode(), currentPosition);
 
             if (currentPosition.positionArray.equals(Main.endPosition.positionArray)) {
@@ -38,7 +38,8 @@ public class Algorithm {
                 } else {
                     mapOfVisited.put(key, position);
                     priorityQueue.add(position.hashCode());
-                    System.out.println("ADD " + position.positionArray.toString() + " " +  position.weight + " " + position.stepForPosition);
+                    System.out.println("ADD " + position.positionArray.toString() + " Weight " +  position.weight
+                            + " Step " + position.stepForPosition);
                 }
             }
             System.out.println("----------");
